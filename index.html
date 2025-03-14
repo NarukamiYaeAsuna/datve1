@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký Mua Vé</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Đăng Ký Mua Vé</h2>
+        <form id="ticketForm">
+            <label for="name">Tên người đăng ký:</label>
+            <input type="text" id="name" required>
+
+            <label for="address">Địa chỉ:</label>
+            <input type="text" id="address">
+
+            <label for="idCard">Số CCCD:</label>
+            <input type="text" id="idCard" required>
+
+            <label for="dob">Ngày tháng năm sinh:</label>
+            <input type="date" id="dob" required>
+
+            <label for="classType">Loại vé:</label>
+            <select id="classType" required>
+                <option value="">Chọn loại vé</option>
+                <option value="business">Business Class</option>
+                <option value="economy">Economy Class</option>
+            </select>
+
+            <label for="payment">Số tiền vé:</label>
+            <input type="text" id="payment" readonly>
+
+            <button type="button" onclick="calculatePayment()">Xác nhận</button>
+        </form>
+    </div>
+
+    <script>
+        function calculatePayment() {
+            let dob = document.getElementById("dob").value;
+            let classType = document.getElementById("classType").value;
+            let paymentField = document.getElementById("payment");
+            
+            if (!dob || !classType) {
+                alert("Vui lòng nhập đầy đủ thông tin.");
+                return;
+            }
+
+            let birthYear = new Date(dob).getFullYear();
+            let currentYear = new Date().getFullYear();
+            let age = currentYear > birthYear ? currentYear - birthYear : 1;
+            
+            let price = 0;
+            if (classType === "business") {
+                price = age < 7 ? 1500000 : 5000000;
+            } else if (classType === "economy") {
+                price = age < 7 ? 900000 : 3500000;
+            }
+            
+            if (price > 0) {
+                paymentField.value = price.toLocaleString("vi-VN") + " VND";
+            } else {
+                alert("Tuổi không hợp lệ. Vui lòng kiểm tra lại.");
+            }
+        }
+    </script>
+</body>
+</html>
